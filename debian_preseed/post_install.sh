@@ -14,6 +14,8 @@ oldhn="$(hostname -s)"
 
 hostname "$newhn"
 echo "$newhn" > /etc/hostname
-sed -i 's|\(\s\)'"$oldhn"'[^a-zA-Z0-9-]|\1'"$newhn"'|g' /etc/hosts
+sed -i 's|\(\s\)'"$oldhn"'[^a-zA-Z0-9-]*|\1'"$newhn"'|g' /etc/hosts
 sed -i 's|^START=no$|START=yes|' /etc/default/puppet
+
+# echo x.x.x.x puppet >> /etc/hosts
 
