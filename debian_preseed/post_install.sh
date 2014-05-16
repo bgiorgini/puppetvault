@@ -5,7 +5,11 @@
 PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 export PATH
 
-newhn="$(uuidgen)"
+newhncmnd="curl -s http://www.computernamer.com/ | grep -o 'entries/[0-9]\+-[^/\"]\+' | sort -u | awk -F- '{print \$2;exit}'"
+newhn="$(sh <<< $newhncmnd)"        ; sleep 1
+newhn="$newhn-$(sh <<< $newhncmnd)" ; sleep 1
+newhn="$newhn-$(sh <<< $newhncmnd)"
+
 oldhn="$(hostname -s)"
 
 hostname "$newhn"
