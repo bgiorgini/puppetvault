@@ -8,7 +8,7 @@ export PATH
 newhn="$(uuidgen)"
 oldhn="$(hostname -s)"
 
-hostname $newhn
+hostname "$newhn"
 echo "$newhn" > /etc/hostname
 sed -i 's|\(\s\)'"$oldhn"'[^a-zA-Z0-9-]|\1'"$newhn"'|g' /etc/hosts
 sed -i 's|^START=no$|START=yes|' /etc/default/puppet
