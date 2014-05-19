@@ -26,3 +26,15 @@ then
      ed "${hosts_file}" <<< "$ed_script_insert"
 fi
 
+apt-get update
+apt-get install -y puppet
+
+sed -i 's|^START=no$|START=yes|' /etc/default/puppet
+
+service puppet start
+
+if [ "$(hostname)" = "puppet" ]
+then
+  apt-get install -y puppetmaster
+fi
+
