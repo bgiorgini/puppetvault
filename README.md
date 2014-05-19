@@ -12,3 +12,5 @@ while reading the book, Pro Puppet, 2nd edition.
 
 Let's have some fun.
 
+Preseed was good but Vagrant is better. Now we are going to use Vagrant.
+

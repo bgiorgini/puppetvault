@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise32"
+  # config.vm.box = "hashicorp/precise32"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -119,6 +119,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # chef-validator, unless you changed the configuration.
   #
   #   chef.validation_client_name = "ORGNAME-validator"
+
   config.vm.provision "file", source: "vagrant_hosts", destination: "/tmp/vagrant_hosts"
   config.vm.provision "shell", path: "provision.sh"
+
+  config.vm.define "db" do |db|
+    db.vm.box = "hashicorp/precise32"
+    db.vm.network "private_network", ip: "192.168.50.101", mac: "001122D97376"
+    db.vm.hostname = "db"
+  end
+
+  config.vm.define "mail" do |mail|
+    mail.vm.box = "hashicorp/precise32"
+    mail.vm.network "private_network", ip: "192.168.50.102", mac: "001122D97377"
+    mail.vm.hostname = "mail"
+  end
+
+  config.vm.define "puppet" do |puppet|
+    puppet.vm.box = "hashicorp/precise32"
+    puppet.vm.network "private_network", ip: "192.168.50.103", mac: "001122D97378"
+    puppet.vm.hostname = "puppet"
+  end
+
+  config.vm.define "web" do |web|
+    web.vm.box =  "hashicorp/precise32"
+    web.vm.network "private_network", ip: "192.168.50.104", mac: "001122D97379"
+    web.vm.hostname = "web"
+  end
+
 end
