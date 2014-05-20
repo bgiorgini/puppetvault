@@ -1,58 +1,61 @@
 
 # main site definition
 
-$puppetnode = 'frodo-meriadoc-klingon'
-
-node 'frodo-meriadoc-klingon'
+node 'puppet'
 {
   # puppet
 }
 
-node 'freon-momento-stark'
+node 'web'
 {
   # web
 }
 
-node 'guarismo-aragorn-stegosaurus'
+node 'db'
 {
   # db
 }
 
-node 'scalar-gollum-reindeer'
+node 'mail'
 {
   # mail
 }
 
 class ssh::params {
   case $::osfamily {
-  'Debian': { $sshd_package  = 'ssh' }
-  'RedHat': { $sshd_package  = 'openssh-server' }
-  default:  {fail("Login class does not work on osfamily: ${::osfamily}")}
+    'Debian': {
+      $sshd_package  = "ssh"
+      $sshd_service  = "ssh"
+    }
+    'RedHat': {
+      $sshd_package  = "openssh-server"
+      $sshd_service  = "sshd"
+    }
+    default:  {fail("Login class does not work on osfamily: ${::osfamily}")}
   }
 }
 
-class ssh inherits ssh::params {
-  package { $::ssh::params::sshd_package:
-    ensure => installed,
+class ssh (
+  manage_package = false,
+  manage_service = false,
+  package_name   = $::ssh::params::sshd_package
+  ) inherits ssh::params {
+    if manage_package == true {
+      package { $package_name:
+        ensure => installed,
+      }
+    }
+    if manage_service == true {
+      service { $::ssh::params::sshd_service:
+        ensure => running,
+      }
+    }
   }
+
+class { 'ssh':
+  manage_package => true,
+  manage_service   => true,
 }
 
-include ssh
-
-# class ssh::params {
-#   case $::osfamily {
-#   'Debian': { $sshd_package  = 'ssh' }
-#   'RedHat': { $sshd_package  = 'openssh-server' }
-#   default:  {fail("Login class does not work on osfamily: ${::osfamily}")}
-#   }
-# }
-# 
-# class ssh {
-#   include ssh::params
-#   package { $::ssh::params::sshd_package:
-#     ensure => installed,
-#   }
-# }
-# 
-# include ssh
+include ssh 
 
