@@ -35,6 +35,6 @@ service puppet start
 
 if [ "$(hostname)" = "puppet" ]
 then
-  apt-get install -y puppetmaster
+  apt-get install -y git puppetmaster vim
 fi
 
