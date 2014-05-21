@@ -40,12 +40,12 @@ class ssh (
   manage_service = false,
   package_name   = $::ssh::params::sshd_package
   ) inherits ssh::params {
-    if manage_package == true {
+    if $manage_package == true {
       package { $package_name:
         ensure => installed,
       }
     }
-    if manage_service == true {
+    if $manage_service == true {
       service { $::ssh::params::sshd_service:
         ensure => running,
       }
